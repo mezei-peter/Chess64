@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "FreeSerif";
+    src: local("FreeSerif"), url("./fonts/FreeSerif.ttf");
+}
+
 *, *::before, *::after {
     box-sizing: border-box;
+}
+
+.chess-board {
+    font-family: FreeSerif;
 }
