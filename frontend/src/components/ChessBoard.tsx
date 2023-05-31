@@ -1,6 +1,8 @@
 function ChessBoard() {
     return (
-        <div className={""}>chess board</div>
+        <div className={"h-4/5"}>
+
+        </div>
     );
 }
 
