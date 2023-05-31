@@ -6,7 +6,7 @@ function PlayForm({handleSubmit}: { handleSubmit: () => void }) {
                   handleSubmit();
               }}>
             <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700
+                className="shadow appearance-none border rounded py-2 px-3 text-gray-700
                 leading-tight focus:outline-none focus:shadow-outline w-2/4 relative bottom-4"
                 id="username" type="text" placeholder="Name"/>
             <button
