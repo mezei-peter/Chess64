@@ -1,8 +1,5 @@
-import React, {Dispatch} from "react";
-
-function ChessSquare({piece, dark, select}: {
+function ChessSquare({piece, dark}: {
     piece: string, dark: boolean,
-    select: Dispatch<React.SetStateAction<null>>
 }) {
     const bgClass: string = dark ? "bg-gray-200" : "bg-gray-100";
     const isEmpty: boolean = piece === '0';

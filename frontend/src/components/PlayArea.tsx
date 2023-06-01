@@ -16,11 +16,10 @@ function initBoard(): string[] {
 
 function PlayArea({handleQuit}: { handleQuit: () => void }) {
     const [board, _setBoard] = useState(initBoard());
-    const [_selectedSquare, setSelectedSquare] = useState(null);
 
     return (
         <div className={"h-5/6 flex flex-col justify-between items-center"}>
-            <ChessBoard board={board} select={setSelectedSquare}/>
+            <ChessBoard board={board}/>
             <button onClick={handleQuit} className="bg-red-800 hover:bg-red-900 text-white font-semibold py-2 px-4
                 rounded shadow">
                 Quit
