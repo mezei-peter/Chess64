@@ -5,20 +5,6 @@ function ChessSquare({piece, dark, handleSquareClick}: {
 }) {
     const bgClass: string = dark ? classConstants.bgDark: classConstants.bgLight;
 
-    /*function handleClick(e: React.MouseEvent) {
-        const classList: DOMTokenList = (e.target as Element).classList;
-        const bgHighlight: string = dark ? "bg-red-200" : "bg-red-100";
-        if (classList.contains(bgClass)) {
-            if (!isEmpty) {
-                classList.remove(bgClass);
-                classList.add(bgHighlight);
-            }
-        } else {
-            classList.remove(bgHighlight);
-            classList.add(bgClass);
-        }
-    }*/
-
     return (
         <div
             className={`h-[4.3vmax] w-[4.3vmax] flex justify-center items-center cursor-pointer ${bgClass}`}
