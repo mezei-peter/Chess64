@@ -23,12 +23,30 @@ function PlayArea({handleQuit}: { handleQuit: () => void }) {
     const [whiteTurn, _setWhiteTurn] = useState(true);
     const [selectedSquare, setSelectedSquare] = useState(Element.prototype);
 
+    function validateMove(_fromSquare: Element, _toSquare: Element): boolean {
+        // TODO
+        return true;
+    }
+
     function handleSquareClick(square: Element) {
         const piece: string | null = square.textContent;
         if (piece === null) {
             return;
         }
-        if ((whiteTurn && whitePieces.includes(piece)) || (!whiteTurn && blackPieces.includes(piece))) {
+        if (piece === '') {
+            if (selectedSquare === Element.prototype) {
+                return;
+            }
+            if (validateMove(selectedSquare, square)) {
+                square.textContent = selectedSquare.textContent;
+                selectedSquare.textContent = '';
+                selectedSquare.classList.remove(classConstants.bgHighlight);
+                setSelectedSquare(Element.prototype);
+            }
+            return;
+        }
+        if ((whiteTurn && whitePieces.includes(piece as string))
+            || (!whiteTurn && blackPieces.includes(piece as string))) {
             if (selectedSquare !== Element.prototype) {
                 selectedSquare.classList.remove(classConstants.bgHighlight);
             }
