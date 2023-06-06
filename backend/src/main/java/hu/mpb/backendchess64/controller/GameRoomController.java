@@ -26,7 +26,6 @@ public class GameRoomController {
     @MessageMapping("/pair/{userId}")
     @SendTo("/topic/pairings")
     public GameRoom pairIntoGameRoom(@DestinationVariable String userId) {
-        System.out.println("Incoming message: " + userId);
         try {
             Player player = playerService.getById(UUID.fromString(userId)).orElse(null);
             if (player == null) {

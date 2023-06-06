@@ -11,8 +11,8 @@ function PairingLoader({playerId}: { playerId: string }) {
         client.current.connect({},
             () => {
                 console.log("Connected to Chess64");
-                client.current.send(`${sockConstants.root}/${sockConstants.appPair}/${playerId}`);
-                client.current.subscribe(`${sockConstants.root}/${sockConstants.topicPairings}`, msg => onMessage(msg));
+                client.current.send(`/${sockConstants.appPair}/${playerId}`);
+                client.current.subscribe(`/${sockConstants.topicPairings}`, msg => onMessage(msg));
             },
             () => console.error("Connection to Chess64 failed"));
     }, []);
