@@ -2,6 +2,7 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import sockConstants from "../constants/sockConstants";
 import {useEffect, useRef} from "react";
+import GameRoom from "../types/gameRoom";
 
 function PairingLoader({playerId}: { playerId: string }) {
     const sock = useRef(new SockJS(`${sockConstants.root}/${sockConstants.chess64}`));
@@ -18,7 +19,8 @@ function PairingLoader({playerId}: { playerId: string }) {
     }, []);
 
     function onMessage(msg: Stomp.Message) {
-        console.log(msg);
+        const gameRoom: GameRoom = JSON.parse(msg.body);
+        console.log(gameRoom);
     }
 
     return (
