@@ -20,6 +20,11 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
+    @PostMapping("/")
+    public ResponseEntity<String> createUnnamedPlayer() {
+        return createPlayer("");
+    }
+
     @PostMapping("/{name}")
     public ResponseEntity<String> createPlayer(@PathVariable String name) {
         try {

@@ -1,6 +1,7 @@
 package hu.mpb.backendchess64.service;
 
 import hu.mpb.backendchess64.model.Player;
+import hu.mpb.backendchess64.model.PlayerStatus;
 import hu.mpb.backendchess64.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +15,10 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player create(String name) {
-        Player player = Player.builder().name(name).build();
+        Player player = Player.builder()
+                .name(name)
+                .status(PlayerStatus.WAITING)
+                .build();
         return playerRepository.save(player);
     }
 }

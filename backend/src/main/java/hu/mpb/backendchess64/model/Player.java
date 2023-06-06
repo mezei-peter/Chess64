@@ -19,8 +19,11 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID playerId;
 
-    @Column
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private PlayerStatus status;
 }
 
 
