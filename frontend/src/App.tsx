@@ -1,6 +1,6 @@
 import PlayArea from "./components/PlayArea";
 import PlayForm from "./components/PlayForm";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import PairingLoader from "./components/PairingLoader";
 import GameRoom from "./types/gameRoom";
 
@@ -17,6 +17,14 @@ function App() {
     const [playerId, setPlayerId] = useState("");
     const [isWhite, setIsWhite] = useState(true);
     const [opponentName, setOpponentName] = useState("");
+
+    useEffect(() => {
+        window.onbeforeunload = () => {
+            if (playerId !== "") {
+                return "Your data will be lost if you reload.";
+            }
+        }
+    }, [playerId]);
 
     function startPlaying(room: GameRoom) {
         const white: boolean = room.whitePlayer.playerId === playerId;
