@@ -35,7 +35,7 @@ function App() {
             <header className={"text-center text-5xl text-gray-800"}>Chess64</header>
             {freshStart &&
                 <PlayForm playerName={playerName} setPlayerName={setPlayerName} handleSubmit={startPairing}/>}
-            {waiting && <PairingLoader/>}
+            {waiting && <PairingLoader playerId={playerId}/>}
             {playing && <PlayArea handleQuit={quitPlaying}/>}
             <footer className={""}>🄯 2023 MPB. All rights reversed.</footer>
         </div>
