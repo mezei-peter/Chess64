@@ -15,8 +15,10 @@ function App() {
     const [playing, setPlaying] = useState(false);
     const [playerName, setPlayerName] = useState("");
     const [playerId, setPlayerId] = useState("");
+    const [isWhite, setIsWhite] = useState(true);
 
     function startPlaying(room: GameRoom) {
+        setIsWhite(room.whitePlayer.playerId === playerId);
         setWaiting(false);
         setPlaying(true);
     }
@@ -40,7 +42,7 @@ function App() {
             {freshStart &&
                 <PlayForm playerName={playerName} setPlayerName={setPlayerName} handleSubmit={startPairing}/>}
             {waiting && <PairingLoader playerId={playerId} handleGameRoom={startPlaying}/>}
-            {playing && <PlayArea handleQuit={quitPlaying}/>}
+            {playing && <PlayArea isWhite={isWhite} handleQuit={quitPlaying}/>}
             <footer className={""}>🄯 2023 MPB. All rights reversed.</footer>
         </div>
     )

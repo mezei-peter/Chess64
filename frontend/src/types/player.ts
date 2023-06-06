@@ -1,5 +1,5 @@
 type Player = {
-    payerId: string,
+    playerId: string,
     name: string,
     status: string,
 };

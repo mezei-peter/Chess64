@@ -18,8 +18,8 @@ function initBoard(): string[] {
     ];
 }
 
-function PlayArea({handleQuit}: { handleQuit: () => void }) {
-    const [board, _setBoard] = useState(initBoard());
+function PlayArea({isWhite, handleQuit}: { isWhite: boolean, handleQuit: () => void }) {
+    const [board, _setBoard] = useState(isWhite ? initBoard(): initBoard().reverse());
     const [whiteTurn, _setWhiteTurn] = useState(true);
     const [selectedSquare, setSelectedSquare] = useState(Element.prototype);
 
