@@ -18,8 +18,13 @@ function initBoard(): string[] {
     ];
 }
 
-function PlayArea({isWhite, handleQuit}: { isWhite: boolean, handleQuit: () => void }) {
-    const [board, _setBoard] = useState(isWhite ? initBoard(): initBoard().reverse());
+function PlayArea({isWhite, handleQuit, opponentName, playerName}: {
+    isWhite: boolean,
+    handleQuit: () => void,
+    opponentName: string,
+    playerName: string,
+}) {
+    const [board, _setBoard] = useState(isWhite ? initBoard() : initBoard().reverse());
     const [whiteTurn, _setWhiteTurn] = useState(true);
     const [selectedSquare, setSelectedSquare] = useState(Element.prototype);
 
@@ -57,7 +62,9 @@ function PlayArea({isWhite, handleQuit}: { isWhite: boolean, handleQuit: () => v
 
     return (
         <div className={"h-5/6 flex flex-col justify-between items-center"}>
+            <div>{opponentName}</div>
             <ChessBoard board={board} handleSquareClick={handleSquareClick}/>
+            <div>{playerName}</div>
             <button onClick={handleQuit} className="bg-red-800 hover:bg-red-900 text-white font-semibold py-2 px-4
                 rounded shadow">
                 Quit

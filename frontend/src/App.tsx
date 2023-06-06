@@ -16,9 +16,12 @@ function App() {
     const [playerName, setPlayerName] = useState("");
     const [playerId, setPlayerId] = useState("");
     const [isWhite, setIsWhite] = useState(true);
+    const [opponentName, setOpponentName] = useState("");
 
     function startPlaying(room: GameRoom) {
-        setIsWhite(room.whitePlayer.playerId === playerId);
+        const white: boolean = room.whitePlayer.playerId === playerId;
+        setIsWhite(white);
+        setOpponentName(white ? room.blackPlayer.name : room.whitePlayer.name);
         setWaiting(false);
         setPlaying(true);
     }
@@ -42,7 +45,8 @@ function App() {
             {freshStart &&
                 <PlayForm playerName={playerName} setPlayerName={setPlayerName} handleSubmit={startPairing}/>}
             {waiting && <PairingLoader playerId={playerId} handleGameRoom={startPlaying}/>}
-            {playing && <PlayArea isWhite={isWhite} handleQuit={quitPlaying}/>}
+            {playing && <PlayArea isWhite={isWhite} opponentName={opponentName} playerName={playerName}
+                                  handleQuit={quitPlaying}/>}
             <footer className={""}>🄯 2023 MPB. All rights reversed.</footer>
         </div>
     )
