@@ -4,7 +4,10 @@ import sockConstants from "../constants/sockConstants";
 import {useEffect, useRef} from "react";
 import GameRoom from "../types/gameRoom";
 
-function PairingLoader({playerId}: { playerId: string }) {
+function PairingLoader({playerId, handleGameRoom}: {
+    playerId: string,
+    handleGameRoom: (gr: GameRoom) => void
+}) {
     const sock = useRef(new SockJS(`${sockConstants.root}/${sockConstants.chess64}`));
     const client = useRef(Stomp.over(sock.current));
 
@@ -19,8 +22,9 @@ function PairingLoader({playerId}: { playerId: string }) {
     }, []);
 
     function onMessage(msg: Stomp.Message) {
+        client.current.disconnect(() => 0);
         const gameRoom: GameRoom = JSON.parse(msg.body);
-        console.log(gameRoom);
+        handleGameRoom(gameRoom);
     }
 
     return (

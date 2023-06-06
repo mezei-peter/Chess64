@@ -2,6 +2,7 @@ import PlayArea from "./components/PlayArea";
 import PlayForm from "./components/PlayForm";
 import {useState} from "react";
 import PairingLoader from "./components/PairingLoader";
+import GameRoom from "./types/gameRoom";
 
 async function createUser(name: string): Promise<string> {
     const res = await fetch(`/api/player/${name}`, {method: "POST"});
@@ -15,7 +16,8 @@ function App() {
     const [playerName, setPlayerName] = useState("");
     const [playerId, setPlayerId] = useState("");
 
-    function startPlaying() {
+    function startPlaying(room: GameRoom) {
+        setWaiting(false);
         setPlaying(true);
     }
 
@@ -28,6 +30,8 @@ function App() {
 
     function quitPlaying() {
         setPlaying(false);
+        setPlayerId("");
+        setFreshStart(true);
     }
 
     return (
@@ -35,7 +39,7 @@ function App() {
             <header className={"text-center text-5xl text-gray-800"}>Chess64</header>
             {freshStart &&
                 <PlayForm playerName={playerName} setPlayerName={setPlayerName} handleSubmit={startPairing}/>}
-            {waiting && <PairingLoader playerId={playerId}/>}
+            {waiting && <PairingLoader playerId={playerId} handleGameRoom={startPlaying}/>}
             {playing && <PlayArea handleQuit={quitPlaying}/>}
             <footer className={""}>🄯 2023 MPB. All rights reversed.</footer>
         </div>
