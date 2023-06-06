@@ -17,7 +17,7 @@ public class SpringConfig {
     }
 
     @Bean
-    public GameRoomService gameRoomService(GameRoomRepository gameRoomRepository) {
-        return new GameRoomServiceImpl(gameRoomRepository);
+    public GameRoomService gameRoomService(GameRoomRepository gameRoomRepository, PlayerRepository playerRepository) {
+        return new GameRoomServiceImpl(gameRoomRepository, playerRepository);
     }
 }
