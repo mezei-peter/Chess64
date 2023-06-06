@@ -18,8 +18,13 @@ function initBoard(): string[] {
     ];
 }
 
-function PlayArea({handleQuit}: { handleQuit: () => void }) {
-    const [board, _setBoard] = useState(initBoard());
+function PlayArea({isWhite, handleQuit, opponentName, playerName}: {
+    isWhite: boolean,
+    handleQuit: () => void,
+    opponentName: string,
+    playerName: string,
+}) {
+    const [board, _setBoard] = useState(isWhite ? initBoard() : initBoard().reverse());
     const [whiteTurn, _setWhiteTurn] = useState(true);
     const [selectedSquare, setSelectedSquare] = useState(Element.prototype);
 
@@ -57,7 +62,11 @@ function PlayArea({handleQuit}: { handleQuit: () => void }) {
 
     return (
         <div className={"h-5/6 flex flex-col justify-between items-center"}>
-            <ChessBoard board={board} handleSquareClick={handleSquareClick}/>
+            <div className={"flex flex-col items-start"}>
+                <div className={"font-bold text-xl text-gray-800 p-2"}>{opponentName}</div>
+                <ChessBoard board={board} handleSquareClick={handleSquareClick}/>
+                <div className={"font-bold text-xl text-gray-800 p-2"}>{playerName}</div>
+            </div>
             <button onClick={handleQuit} className="bg-red-800 hover:bg-red-900 text-white font-semibold py-2 px-4
                 rounded shadow">
                 Quit
