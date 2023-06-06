@@ -5,6 +5,9 @@ import hu.mpb.backendchess64.model.PlayerStatus;
 import hu.mpb.backendchess64.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
 
@@ -20,5 +23,15 @@ public class PlayerServiceImpl implements PlayerService {
                 .status(PlayerStatus.WAITING)
                 .build();
         return playerRepository.save(player);
+    }
+
+    @Override
+    public Player findOpponentFor(Player player) {
+        return null;
+    }
+
+    @Override
+    public Optional<Player> getById(UUID id) {
+        return playerRepository.findById(id);
     }
 }
