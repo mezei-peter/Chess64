@@ -27,7 +27,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player findOpponentFor(Player player) {
-        return playerRepository.findFirstByStatus(PlayerStatus.WAITING);
+        return playerRepository.findFirstByStatusAndPlayerIdNot(PlayerStatus.WAITING, player.getPlayerId());
     }
 
     @Override

@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, UUID> {
-    Player findFirstByStatus(PlayerStatus status);
+    Player findFirstByStatusAndPlayerIdNot(PlayerStatus status, UUID playerId);
 }
