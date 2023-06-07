@@ -73,6 +73,9 @@ function App() {
         setPlaying(false);
         setWaiting(false);
         setPlayerId("");
+        setRoom(null);
+        window.localStorage.setItem("playerId", "");
+        window.localStorage.setItem("roomId", "");
         setFreshStart(true);
     }
 
