@@ -9,15 +9,29 @@ async function createUser(name: string): Promise<string> {
     return await res.text();
 }
 
+
 function App() {
     const [freshStart, setFreshStart] = useState(true);
     const [waiting, setWaiting] = useState(false);
     const [playing, setPlaying] = useState(false);
     const [playerName, setPlayerName] = useState("");
-    const [playerId, setPlayerId] = useState("");
+    const [playerId, setPlayerId] = useState(localStorage.getItem("playerId"));
     const [isWhite, setIsWhite] = useState(true);
     const [opponentName, setOpponentName] = useState("");
     const room = useRef<GameRoom>(null) as MutableRefObject<GameRoom>;
+
+    useEffect(() => {
+        const roomId = localStorage.getItem("roomId");
+        if (roomId) {
+            fetch("/api/room/" + roomId)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                })
+                .then((data: GameRoom) => room.current = data);
+        }
+    }, []);
 
     useEffect(() => {
         if (playerId) {
