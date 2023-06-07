@@ -4,9 +4,10 @@ import sockConstants from "../constants/sockConstants";
 import {useEffect, useRef} from "react";
 import GameRoom from "../types/gameRoom";
 
-function PairingLoader({playerId, handleGameRoom}: {
+function PairingLoader({playerId, handleGameRoom, handleCancel}: {
     playerId: string,
-    handleGameRoom: (gr: GameRoom) => void
+    handleGameRoom: (gr: GameRoom) => void,
+    handleCancel: () => void,
 }) {
     const sock = useRef(new SockJS(`${sockConstants.root}/${sockConstants.chess64}`));
     const client = useRef(Stomp.over(sock.current));
@@ -28,8 +29,13 @@ function PairingLoader({playerId, handleGameRoom}: {
     }
 
     return (
-        <div className={"animate-pulse m-auto text-gray-800 text-2xl p-2"}>
-            Looking for an opponent . . .
+        <div className={"h-3/4 flex flex-col justify-between items-center text-2xl"}>
+            <span/>
+            <span className={"animate-pulse text-gray-800 p-2"}>Looking for an opponent . . .</span>
+            <button onClick={handleCancel} className="bg-red-800 hover:bg-red-900 text-white font-semibold py-2 px-4
+                rounded shadow">
+                Cancel
+            </button>
         </div>
     );
 }

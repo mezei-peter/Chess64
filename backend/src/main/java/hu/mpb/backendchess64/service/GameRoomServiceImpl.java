@@ -7,7 +7,9 @@ import hu.mpb.backendchess64.repository.GameRoomRepository;
 import hu.mpb.backendchess64.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 public class GameRoomServiceImpl implements GameRoomService {
     private final GameRoomRepository gameRoomRepository;
@@ -40,5 +42,10 @@ public class GameRoomServiceImpl implements GameRoomService {
                     .build();
         }
         return gameRoomRepository.save(room);
+    }
+
+    @Override
+    public Optional<GameRoom> get(UUID id) {
+        return gameRoomRepository.findById(id);
     }
 }
