@@ -1,6 +1,6 @@
 import PlayArea from "./components/PlayArea";
 import PlayForm from "./components/PlayForm";
-import {useEffect, useState} from "react";
+import {MutableRefObject, useEffect, useRef, useState} from "react";
 import PairingLoader from "./components/PairingLoader";
 import GameRoom from "./types/gameRoom";
 
@@ -17,19 +17,25 @@ function App() {
     const [playerId, setPlayerId] = useState("");
     const [isWhite, setIsWhite] = useState(true);
     const [opponentName, setOpponentName] = useState("");
+    const room = useRef<GameRoom>(null) as MutableRefObject<GameRoom>;
 
     useEffect(() => {
-        window.onbeforeunload = () => {
-            if (playerId !== "") {
-                return "Your data will be lost if you reload.";
-            }
+        if (playerId) {
+            window.localStorage.setItem("playerId", playerId);
         }
     }, [playerId]);
 
-    function startPlaying(room: GameRoom) {
-        const white: boolean = room.whitePlayer.playerId === playerId;
+    useEffect(() => {
+        if (room.current) {
+            window.localStorage.setItem("roomId", room.current.roomId);
+        }
+    }, [room.current]);
+
+    function startPlaying(gameRoom: GameRoom) {
+        room.current = gameRoom;
+        const white: boolean = gameRoom.whitePlayer.playerId === playerId;
         setIsWhite(white);
-        setOpponentName(white ? room.blackPlayer.name : room.whitePlayer.name);
+        setOpponentName(white ? gameRoom.blackPlayer.name : gameRoom.whitePlayer.name);
         setWaiting(false);
         setPlaying(true);
     }
