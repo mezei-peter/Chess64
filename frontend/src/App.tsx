@@ -18,7 +18,7 @@ function App() {
     const [playerId, setPlayerId] = useState(localStorage.getItem("playerId"));
     const [isWhite, setIsWhite] = useState(true);
     const [opponentName, setOpponentName] = useState("");
-    const room = useRef<GameRoom>(null) as MutableRefObject<GameRoom>;
+    const [room, setRoom] = useState<GameRoom | null>(null);
 
     useEffect(() => {
         const roomId = localStorage.getItem("roomId");
@@ -29,7 +29,9 @@ function App() {
                         return response.json();
                     }
                 })
-                .then((data: GameRoom) => room.current = data);
+                .then((data: GameRoom) => {
+                    setRoom(data);
+                });
         }
     }, []);
 
@@ -40,16 +42,21 @@ function App() {
     }, [playerId]);
 
     useEffect(() => {
-        if (room.current) {
-            window.localStorage.setItem("roomId", room.current.roomId);
+        if (room) {
+            window.localStorage.setItem("roomId", room.roomId);
+            startPlaying(room);
         }
-    }, [room.current]);
+    }, [room]);
 
     function startPlaying(gameRoom: GameRoom) {
-        room.current = gameRoom;
+        if (room !== gameRoom) {
+            setRoom(gameRoom);
+        }
         const white: boolean = gameRoom.whitePlayer.playerId === playerId;
         setIsWhite(white);
         setOpponentName(white ? gameRoom.blackPlayer.name : gameRoom.whitePlayer.name);
+        setPlayerName(!white ? gameRoom.blackPlayer.name : gameRoom.whitePlayer.name);
+        setFreshStart(false);
         setWaiting(false);
         setPlaying(true);
     }
@@ -58,11 +65,13 @@ function App() {
         const id = await createUser(playerName);
         setPlayerId(id);
         setFreshStart(false);
+        setPlaying(false);
         setWaiting(true);
     }
 
     function quitPlaying() {
         setPlaying(false);
+        setWaiting(false);
         setPlayerId("");
         setFreshStart(true);
     }
