@@ -38,6 +38,11 @@ function App() {
     useEffect(() => {
         if (playerId) {
             window.localStorage.setItem("playerId", playerId);
+            if (!room) {
+                setFreshStart(false);
+                setPlaying(false);
+                setWaiting(true);
+            }
         }
     }, [playerId]);
 
@@ -82,9 +87,10 @@ function App() {
     return (
         <div className={"flex flex-col justify-between h-screen w-screen"}>
             <header className={"text-center text-5xl text-gray-800"}>Chess64</header>
-            {freshStart &&
-                <PlayForm playerName={playerName} setPlayerName={setPlayerName} handleSubmit={startPairing}/>}
-            {waiting && <PairingLoader playerId={playerId} handleGameRoom={startPlaying}/>}
+            {freshStart && <PlayForm playerName={playerName} setPlayerName={setPlayerName}
+                                     handleSubmit={startPairing}/>}
+            {waiting && <PairingLoader playerId={playerId as string} handleGameRoom={startPlaying}
+                                       handleCancel={quitPlaying}/>}
             {playing && <PlayArea isWhite={isWhite} opponentName={opponentName} playerName={playerName}
                                   handleQuit={quitPlaying}/>}
             <footer className={""}>🄯 2023 MPB. All rights reversed.</footer>
