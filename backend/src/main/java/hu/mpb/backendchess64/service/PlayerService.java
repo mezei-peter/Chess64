@@ -1,6 +1,7 @@
 package hu.mpb.backendchess64.service;
 
 import hu.mpb.backendchess64.model.Player;
+import jakarta.persistence.NoResultException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,4 +14,6 @@ public interface PlayerService {
     Player findOpponentFor(Player player);
 
     Optional<Player> getById(UUID fromString);
+
+    void delete(UUID uuid);
 }

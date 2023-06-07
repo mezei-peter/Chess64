@@ -34,4 +34,9 @@ public class PlayerServiceImpl implements PlayerService {
     public Optional<Player> getById(UUID id) {
         return playerRepository.findById(id);
     }
+
+    @Override
+    public void delete(UUID uuid) {
+        playerRepository.deleteById(uuid);
+    }
 }

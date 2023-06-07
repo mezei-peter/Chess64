@@ -10,6 +10,12 @@ async function createUser(name: string): Promise<string> {
 }
 
 
+async function deleteUser(playerId: string) {
+    fetch("/api/player/delete/" + playerId, {method: "DELETE"})
+        .then(() => console.log("player deleted"))
+        .catch(() => console.error("Unable to delete player: " + playerId));
+}
+
 function App() {
     const [freshStart, setFreshStart] = useState(true);
     const [waiting, setWaiting] = useState(false);
@@ -74,7 +80,10 @@ function App() {
         setWaiting(true);
     }
 
-    function quitPlaying() {
+    async function quitPlaying() {
+        if (waiting) {
+            await deleteUser(playerId as string);
+        }
         setPlaying(false);
         setWaiting(false);
         setPlayerId("");
