@@ -6,6 +6,9 @@ Chess 64 is a monolithic fullstack chess application written in **Java** using *
 ⚠️ The project is work in progress and currently in a very early phase. ⚠️
 
 ## Usage
+
+♟️ If you'd like to play against yourself, use two **different browsers**, not just two tabs within the same browser. ♟️
+
 To run the frontend: 
 ```
 cd frontend
