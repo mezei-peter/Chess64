@@ -38,4 +38,8 @@ public class GameRoom {
     public UUID getBlackPlayerId() {
         return blackPlayer.getPlayerId();
     }
+
+    public String getLatestFen() {
+        return game.getLatestFen();
+    }
 }

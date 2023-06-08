@@ -15,6 +15,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class PersistedChessGame {
+    private static final char fenSplitter = ';';
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID gameId;
@@ -43,4 +45,7 @@ public class PersistedChessGame {
     @Column
     private String fenPositions;
 
+    public String getLatestFen() {
+        return fenPositions.split(Character.toString(fenSplitter))[0];
+    }
 }

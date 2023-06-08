@@ -2,7 +2,6 @@ package hu.mpb.backendchess64.service;
 
 import hu.mpb.backendchess64.model.ChessResult;
 import hu.mpb.backendchess64.model.PersistedChessGame;
-import hu.mpb.backendchess64.model.Player;
 import hu.mpb.backendchess64.repository.ChessGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 

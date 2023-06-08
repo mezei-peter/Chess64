@@ -42,9 +42,8 @@ function convertFenPiecePlacementToArray(fenPiecePlacement: string): string[] {
 
 function fetchLatestPosition(roomId: string): Promise<string[]> {
     return fetch(`/api/room/${roomId}/latestPosition`)
-        .then((res: Response) => res.json())
-        .then((fen: string) => convertFenPiecePlacementToArray("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
-        //.then((fen: string) => convertFenPiecePlacementToArray(fen.split(' ')[0]));
+        .then((res: Response) => res.text())
+        .then((fen: string) => convertFenPiecePlacementToArray(fen.split(' ')[0]));
 }
 
 function PlayArea({isWhite, handleQuit, opponentName, playerName, room, playerId}: {

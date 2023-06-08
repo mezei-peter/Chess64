@@ -81,4 +81,23 @@ public class GameRoomController {
         template.convertAndSend("/topic/roomPings/" + room.getBlackPlayerId().toString(), msg);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/room/{roomId}/latestPosition")
+    public ResponseEntity<String> getLatestPosition(@PathVariable String roomId) {
+        try {
+            UUID uuid = UUID.fromString(roomId);
+            GameRoom room = gameRoomService.get(uuid).orElse(null);
+            if (room == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            String latestFen = room.getLatestFen();
+            return new ResponseEntity<>(latestFen, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
