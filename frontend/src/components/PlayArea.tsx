@@ -8,18 +8,43 @@ import GameRoom from "../types/gameRoom";
 
 const whitePieces = ['♖', '♘', '♗', '♕', '♔', '♙'];
 const blackPieces = ['♜', '♞', '♝', '♛', '♚', '♟︎'];
+const fenPieces = ['r', 'n', 'b', 'q', 'k', 'p', 'R', 'N', 'B', 'Q', 'K', 'P'];
+const fenPieceMap = new Map<string, string>();
+fenPieceMap.set('r', '♜');
+fenPieceMap.set('n', '♞');
+fenPieceMap.set('b', '♝');
+fenPieceMap.set('q', '♛');
+fenPieceMap.set('k', '♚');
+fenPieceMap.set('p', '♟︎');
+fenPieceMap.set('R', '♖');
+fenPieceMap.set('N', '♘');
+fenPieceMap.set('B', '♗');
+fenPieceMap.set('Q', '♕');
+fenPieceMap.set('K', '♔');
+fenPieceMap.set('P', '♙');
 
-function initBoard(): string[] {
-    return [
-        '♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜',
-        '♟︎', '♟︎', '♟︎', '♟︎', '♟︎', '♟︎', '♟︎', '♟︎',
-        '0', '0', '0', '0', '0', '0', '0', '0',
-        '0', '0', '0', '0', '0', '0', '0', '0',
-        '0', '0', '0', '0', '0', '0', '0', '0',
-        '0', '0', '0', '0', '0', '0', '0', '0',
-        '♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙',
-        '♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖',
-    ];
+function convertFenPiecePlacementToArray(fenPiecePlacement: string): string[] {
+    const arr = [];
+    for (const c of fenPiecePlacement) {
+        const numVal = Number(c);
+        if (!isNaN(numVal)) {
+            for (let i = 0; i < numVal; i++) {
+                arr.push('');
+            }
+        } else {
+            if (fenPieces.includes(c)) {
+                arr.push(fenPieceMap.get(c) as string);
+            }
+        }
+    }
+    return arr;
+}
+
+function fetchLatestPosition(roomId: string): Promise<string[]> {
+    return fetch(`/api/room/${roomId}/latestPosition`)
+        .then((res: Response) => res.json())
+        .then((fen: string) => convertFenPiecePlacementToArray("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"));
+        //.then((fen: string) => convertFenPiecePlacementToArray(fen.split(' ')[0]));
 }
 
 function PlayArea({isWhite, handleQuit, opponentName, playerName, room, playerId}: {
@@ -30,7 +55,7 @@ function PlayArea({isWhite, handleQuit, opponentName, playerName, room, playerId
     room: GameRoom,
     playerId: string,
 }) {
-    const [board, _setBoard] = useState(isWhite ? initBoard() : initBoard().reverse());
+    const [board, setBoard] = useState<string[]>([]);
     const [whiteTurn, _setWhiteTurn] = useState(true);
     const [selectedSquare, setSelectedSquare] = useState(Element.prototype);
     const sock = useRef(new SockJS(`/ws/${sockConstants.chess64}`));
@@ -42,6 +67,8 @@ function PlayArea({isWhite, handleQuit, opponentName, playerName, room, playerId
                 console.log("Connected to Chess64");
                 client.current.subscribe(`/${sockConstants.topicRoomPings}/${playerId}`, msg => onMessage(msg));
                 fetch(`/api/room/ping/${room.roomId}`, {method: "POST"}).then();
+                fetchLatestPosition(room.roomId)
+                    .then((boardArr: string[]) => isWhite ? setBoard(boardArr) : setBoard(boardArr.reverse()));
             },
             () => console.error("Connection to Chess64 failed"));
     }, []);
