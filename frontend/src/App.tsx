@@ -1,6 +1,6 @@
 import PlayArea from "./components/PlayArea";
 import PlayForm from "./components/PlayForm";
-import {MutableRefObject, useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import PairingLoader from "./components/PairingLoader";
 import GameRoom from "./types/gameRoom";
 
