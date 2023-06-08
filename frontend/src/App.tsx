@@ -101,7 +101,7 @@ function App() {
             {waiting && <PairingLoader playerId={playerId as string} handleGameRoom={startPlaying}
                                        handleCancel={quitPlaying}/>}
             {playing && <PlayArea isWhite={isWhite} opponentName={opponentName} playerName={playerName}
-                                  handleQuit={quitPlaying}/>}
+                                  handleQuit={quitPlaying} room={room as GameRoom} playerId={playerId as string}/>}
             <footer className={""}>🄯 2023 MPB. All rights reversed.</footer>
         </div>
     )

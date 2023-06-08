@@ -10,20 +10,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @Controller
 public class GameRoomController {
+    private final SimpMessagingTemplate template;
     private final PlayerService playerService;
     private final GameRoomService gameRoomService;
 
     @Autowired
-    public GameRoomController(PlayerService playerService, GameRoomService gameRoomService) {
+    public GameRoomController(SimpMessagingTemplate template, PlayerService playerService,
+                              GameRoomService gameRoomService) {
+        this.template = template;
         this.playerService = playerService;
         this.gameRoomService = gameRoomService;
     }
@@ -63,5 +65,17 @@ public class GameRoomController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @PostMapping(path = "/room/ping/{roomId}")
+    public void pingRoom(@PathVariable String roomId) {
+        UUID uuid = UUID.fromString(roomId);
+        GameRoom room = gameRoomService.get(uuid).orElse(null);
+        if (room == null) {
+            return;
+        }
+        String msg = "Room pinged";
+        template.convertAndSend("/topic/roomPings/" + room.getWhitePlayerId().toString(), msg);
+        template.convertAndSend("/topic/roomPings/" + room.getBlackPlayerId().toString(), msg);
     }
 }
