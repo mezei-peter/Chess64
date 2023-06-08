@@ -27,11 +27,19 @@ public class GameRoom {
     @OneToOne
     private Player blackPlayer;
 
+    @JoinColumn
+    @OneToOne
+    private PersistedChessGame game;
+
     public UUID getWhitePlayerId() {
         return whitePlayer.getPlayerId();
     }
 
     public UUID getBlackPlayerId() {
         return blackPlayer.getPlayerId();
+    }
+
+    public String getLatestFen() {
+        return game.getLatestFen();
     }
 }
