@@ -33,7 +33,7 @@ function PlayArea({isWhite, handleQuit, opponentName, playerName, room, playerId
     const [board, _setBoard] = useState(isWhite ? initBoard() : initBoard().reverse());
     const [whiteTurn, _setWhiteTurn] = useState(true);
     const [selectedSquare, setSelectedSquare] = useState(Element.prototype);
-    const sock = useRef(new SockJS(`${sockConstants.root}/${sockConstants.chess64}`));
+    const sock = useRef(new SockJS(`/ws/${sockConstants.chess64}`));
     const client = useRef(Stomp.over(sock.current));
 
     useEffect(() => {
