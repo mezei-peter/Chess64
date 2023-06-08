@@ -26,4 +26,12 @@ public class GameRoom {
     @JoinColumn
     @OneToOne
     private Player blackPlayer;
+
+    public UUID getWhitePlayerId() {
+        return whitePlayer.getPlayerId();
+    }
+
+    public UUID getBlackPlayerId() {
+        return blackPlayer.getPlayerId();
+    }
 }

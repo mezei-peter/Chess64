@@ -1,6 +1,10 @@
 import ChessBoard from "./ChessBoard";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import classConstants from "../constants/classConstants";
+import SockJS from "sockjs-client";
+import sockConstants from "../constants/sockConstants";
+import Stomp from "stompjs";
+import GameRoom from "../types/gameRoom";
 
 const whitePieces = ['♖', '♘', '♗', '♕', '♔', '♙'];
 const blackPieces = ['♜', '♞', '♝', '♛', '♚', '♟︎'];
@@ -18,15 +22,33 @@ function initBoard(): string[] {
     ];
 }
 
-function PlayArea({isWhite, handleQuit, opponentName, playerName}: {
+function PlayArea({isWhite, handleQuit, opponentName, playerName, room, playerId}: {
     isWhite: boolean,
     handleQuit: () => void,
     opponentName: string,
     playerName: string,
+    room: GameRoom,
+    playerId: string,
 }) {
     const [board, _setBoard] = useState(isWhite ? initBoard() : initBoard().reverse());
     const [whiteTurn, _setWhiteTurn] = useState(true);
     const [selectedSquare, setSelectedSquare] = useState(Element.prototype);
+    const sock = useRef(new SockJS(`/ws/${sockConstants.chess64}`));
+    const client = useRef(Stomp.over(sock.current));
+
+    useEffect(() => {
+        client.current.connect({},
+            () => {
+                console.log("Connected to Chess64");
+                client.current.subscribe(`/${sockConstants.topicRoomPings}/${playerId}`, msg => onMessage(msg));
+                fetch(`/api/room/ping/${room.roomId}`, {method: "POST"}).then();
+            },
+            () => console.error("Connection to Chess64 failed"));
+    }, []);
+
+    function onMessage(msg: Stomp.Message) {
+        console.log(msg.body);
+    }
 
     function validateMove(_fromSquare: Element, _toSquare: Element): boolean {
         // TODO

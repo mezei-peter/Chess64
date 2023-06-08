@@ -9,7 +9,7 @@ function PairingLoader({playerId, handleGameRoom, handleCancel}: {
     handleGameRoom: (gr: GameRoom) => void,
     handleCancel: () => void,
 }) {
-    const sock = useRef(new SockJS(`${sockConstants.root}/${sockConstants.chess64}`));
+    const sock = useRef(new SockJS(`/ws/${sockConstants.chess64}`));
     const client = useRef(Stomp.over(sock.current));
 
     useEffect(() => {
