@@ -16,8 +16,8 @@ function PairingLoader({playerId, handleGameRoom, handleCancel}: {
         client.current.connect({},
             () => {
                 console.log("Connected to Chess64");
-                client.current.send(`/${sockConstants.appPair}/${playerId}`);
-                client.current.subscribe(`/${sockConstants.topicPairings}`, msg => onMessage(msg));
+                fetch(`/api/room/pair/${playerId}`, {method: "POST"}).then();
+                client.current.subscribe(`/${sockConstants.topicPairings}/${playerId}`, msg => onMessage(msg));
             },
             () => console.error("Connection to Chess64 failed"));
     }, []);
