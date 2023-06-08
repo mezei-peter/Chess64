@@ -48,22 +48,24 @@ public class GameRoomController {
         }
     }
 
-    @MessageMapping("/pair/{userId}")
-    @SendTo("/topic/pairings")
-    public GameRoom pairIntoGameRoom(@DestinationVariable String userId) {
+    @PostMapping(path = "/room/pair/{playerId}")
+    public ResponseEntity<HttpStatus> pairIntoGameRoom(@PathVariable String playerId) {
         try {
-            Player player = playerService.getById(UUID.fromString(userId)).orElse(null);
+            Player player = playerService.getById(UUID.fromString(playerId)).orElse(null);
             if (player == null) {
-                return null;
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             Player opponent = playerService.findOpponentFor(player);
             if (opponent == null) {
-                return null;
+                return new ResponseEntity<>(HttpStatus.ACCEPTED);
             }
-            return gameRoomService.create(player, opponent);
+            GameRoom room = gameRoomService.create(player, opponent);
+            template.convertAndSend("/topic/pairings/" + player.getPlayerId(), room);
+            template.convertAndSend("/topic/pairings/" + opponent.getPlayerId(), room);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Throwable e) {
             e.printStackTrace();
-            return null;
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
