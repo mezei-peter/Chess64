@@ -14,11 +14,14 @@ import java.util.UUID;
 public class GameRoomServiceImpl implements GameRoomService {
     private final GameRoomRepository gameRoomRepository;
     private final PlayerRepository playerRepository;
+    private final ChessGameService chessGameService;
 
     @Autowired
-    public GameRoomServiceImpl(GameRoomRepository gameRoomRepository, PlayerRepository playerRepository) {
+    public GameRoomServiceImpl(GameRoomRepository gameRoomRepository, PlayerRepository playerRepository,
+                               ChessGameService chessGameService) {
         this.gameRoomRepository = gameRoomRepository;
         this.playerRepository = playerRepository;
+        this.chessGameService = chessGameService;
     }
 
     @Override
@@ -30,17 +33,20 @@ public class GameRoomServiceImpl implements GameRoomService {
 
         int randomVal = new Random().nextInt(2);
         GameRoom room;
+        Player white;
+        Player black;
         if (randomVal == 0) {
-            room = GameRoom.builder()
-                    .whitePlayer(p1)
-                    .blackPlayer(p2)
-                    .build();
+            white = p1;
+            black = p2;
         } else {
-            room = GameRoom.builder()
-                    .whitePlayer(p2)
-                    .blackPlayer(p1)
-                    .build();
+            white = p2;
+            black = p1;
         }
+        room = GameRoom.builder()
+                .whitePlayer(white)
+                .blackPlayer(black)
+                .game(chessGameService.createPersistedChessGame(white.getName(), black.getName()))
+                .build();
         return gameRoomRepository.save(room);
     }
 
