@@ -68,14 +68,15 @@ public class GameRoomController {
     }
 
     @PostMapping(path = "/room/ping/{roomId}")
-    public void pingRoom(@PathVariable String roomId) {
+    public ResponseEntity<HttpStatus> pingRoom(@PathVariable String roomId) {
         UUID uuid = UUID.fromString(roomId);
         GameRoom room = gameRoomService.get(uuid).orElse(null);
         if (room == null) {
-            return;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         String msg = "Room pinged";
         template.convertAndSend("/topic/roomPings/" + room.getWhitePlayerId().toString(), msg);
         template.convertAndSend("/topic/roomPings/" + room.getBlackPlayerId().toString(), msg);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
