@@ -68,4 +68,29 @@ class ChessPositionTest {
         String result = chessPosition.getFEN();
         assertEquals(expected, result);
     }
+
+    @Test
+    void testGetFEN_1_e4() {
+        ChessPosition chessPosition = new ChessPosition(
+                new ChessPiece[][]{
+                        {blackRook, blackKnight, blackBishop, blackQueen, blackKing, blackBishop, blackKnight, blackRook},
+                        {blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn},
+                        {none, none, none, none, none, none, none, none},
+                        {none, none, none, none, none, none, none, none},
+                        {none, none, none, none, whitePawn, none, none, none},
+                        {none, none, none, none, none, none, none, none},
+                        {whitePawn, whitePawn, whitePawn, whitePawn, none, whitePawn, whitePawn, whitePawn},
+                        {whiteRook, whiteKnight, whiteBishop, whiteQueen, whiteKing, whiteBishop, whiteKnight, whiteRook},
+                },
+                PieceColor.BLACK,
+                new CastlingRights(true, true, true, true),
+                new ChessSquare((byte) 4, (byte) 2, ChessPiece.none()),
+                (short) 0,
+                (short) 1
+        );
+
+        String expected = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+        String result = chessPosition.getFEN();
+        assertEquals(expected, result);
+    }
 }
