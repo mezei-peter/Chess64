@@ -30,6 +30,7 @@ public class ChessPosition {
 
     private void appendFenEnPassantTarget(StringBuilder sb) {
         if (enPassantTarget == null) {
+            sb.append(" -");
             return;
         }
         sb.append(" ");
@@ -44,7 +45,7 @@ public class ChessPosition {
             return;
         }
         sb.append(" ");
-        if (!castlingRights.whiteKingSide() && !castlingRights.whiteQueenSide()) {
+        if (castlingRights.none()) {
             sb.append('-');
         } else {
             if (castlingRights.whiteKingSide()) {
@@ -53,11 +54,6 @@ public class ChessPosition {
             if (castlingRights.whiteQueenSide()) {
                 sb.append('Q');
             }
-        }
-        sb.append(" ");
-        if (!castlingRights.blackKingSide() && !castlingRights.blackQueenSide()) {
-            sb.append('-');
-        } else {
             if (castlingRights.blackKingSide()) {
                 sb.append('k');
             }

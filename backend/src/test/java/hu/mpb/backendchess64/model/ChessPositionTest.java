@@ -43,4 +43,29 @@ class ChessPositionTest {
         String result = chessPosition.getFEN();
         assertEquals(expected, result);
     }
+
+    @Test
+    void testGetFEN_Berlin() {
+        ChessPosition chessPosition = new ChessPosition(
+                new ChessPiece[][]{
+                        {blackRook, none, blackBishop, blackQueen, blackKing, blackBishop, none, blackRook},
+                        {blackPawn, blackPawn, blackPawn, blackPawn, none, blackPawn, blackPawn, blackPawn},
+                        {none, none, blackKnight, none, none, blackKnight, none, none},
+                        {none, whiteBishop, none, none, blackPawn, none, none, none},
+                        {none, none, none, none, whitePawn, none, none, none},
+                        {none, none, none, none, none, whiteKnight, none, none},
+                        {whitePawn, whitePawn, whitePawn, whitePawn, none, whitePawn, whitePawn, whitePawn},
+                        {whiteRook, whiteKnight, whiteBishop, whiteQueen, whiteKing, none, none, whiteRook},
+                },
+                PieceColor.WHITE,
+                new CastlingRights(true, true, true, true),
+                null,
+                (short) 4,
+                (short) 4
+        );
+
+        String expected = "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4";
+        String result = chessPosition.getFEN();
+        assertEquals(expected, result);
+    }
 }
