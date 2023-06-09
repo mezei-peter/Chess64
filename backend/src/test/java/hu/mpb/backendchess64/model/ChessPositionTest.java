@@ -20,7 +20,7 @@ class ChessPositionTest {
     private final ChessPiece none = ChessPiece.none();
 
     @Test
-    void testGetFEN() {
+    void testGetFEN_DutchLeningrad() {
         ChessPosition chessPosition = new ChessPosition(
                 new ChessPiece[][]{
                         {blackRook, blackKnight, blackBishop, blackQueen, none, blackRook, blackKing, none},
@@ -35,11 +35,11 @@ class ChessPositionTest {
                 PieceColor.BLACK,
                 new CastlingRights(false, false, false, false),
                 null,
-                (short) 13,
-                (short) 6
+                (short) 1,
+                (short) 7
         );
 
-        String expected = "rnbq1rk1/ppp1p1bp/3p1np1/5p2/2PP4/2N2NP1/PP2PPBP/R1BQ1RK1";
+        String expected = "rnbq1rk1/ppp1p1bp/3p1np1/5p2/2PP4/2N2NP1/PP2PPBP/R1BQ1RK1 b - - 1 7";
         String result = chessPosition.getFEN();
         assertEquals(expected, result);
     }

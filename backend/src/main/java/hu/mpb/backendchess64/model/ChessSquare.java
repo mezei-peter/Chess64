@@ -9,4 +9,12 @@ public class ChessSquare {
         this.coordinates[1] = rank;
         this.chessPiece = chessPiece;
     }
+
+    public char getFileName() {
+        return (char) (Character.getNumericValue('a') + (int) coordinates[0]);
+    }
+
+    public byte getRankName() {
+        return (byte) (coordinates[1] + 1);
+    }
 }

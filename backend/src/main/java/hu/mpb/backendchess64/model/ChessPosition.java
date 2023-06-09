@@ -20,6 +20,73 @@ public class ChessPosition {
 
     public String getFEN() {
         StringBuilder sb = new StringBuilder();
+        appendFenPiecePositions(sb);
+        appendFenActiveColor(sb);
+        appendFenCastlingRights(sb);
+        appendFenEnPassantTarget(sb);
+        sb.append(" ").append(halfMoveClock).append(" ").append(fullMoveClock);
+        return sb.toString();
+    }
+
+    private void appendFenEnPassantTarget(StringBuilder sb) {
+        if (enPassantTarget == null) {
+            return;
+        }
+        sb.append(" ");
+        char fileVal = enPassantTarget.getFileName();
+        byte rankVal = enPassantTarget.getRankName();
+        sb.append(fileVal);
+        sb.append(rankVal);
+    }
+
+    private void appendFenCastlingRights(StringBuilder sb) {
+        if (castlingRights == null) {
+            return;
+        }
+        sb.append(" ");
+        if (!castlingRights.whiteKingSide() && !castlingRights.whiteQueenSide()) {
+            sb.append('-');
+        } else {
+            if (castlingRights.whiteKingSide()) {
+                sb.append('K');
+            }
+            if (castlingRights.whiteQueenSide()) {
+                sb.append('Q');
+            }
+        }
+        sb.append(" ");
+        if (!castlingRights.blackKingSide() && !castlingRights.blackQueenSide()) {
+            sb.append('-');
+        } else {
+            if (castlingRights.blackKingSide()) {
+                sb.append('k');
+            }
+            if (castlingRights.blackQueenSide()) {
+                sb.append('q');
+            }
+        }
+    }
+
+    private void appendFenActiveColor(StringBuilder sb) {
+        if (activeColor == null) {
+            return;
+        }
+        sb.append(" ");
+        char c;
+        if (activeColor == PieceColor.WHITE) {
+            c = 'w';
+        } else if (activeColor == PieceColor.BLACK) {
+            c = 'b';
+        } else {
+            c = '-';
+        }
+        sb.append(c);
+    }
+
+    private void appendFenPiecePositions(StringBuilder sb) {
+        if (piecePositions == null) {
+            return;
+        }
         for (int i = 0; i < piecePositions.length; i++) {
             byte emptySquares = 0;
             for (int j = 0; j < piecePositions[i].length; j++) {
@@ -42,6 +109,5 @@ public class ChessPosition {
                 sb.append('/');
             }
         }
-        return sb.toString();
     }
 }
