@@ -17,4 +17,31 @@ public class ChessPosition {
         this.halfMoveClock = halfMoveClock;
         this.fullMoveClock = fullMoveClock;
     }
+
+    public String getFEN() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < piecePositions.length; i++) {
+            byte emptySquares = 0;
+            for (int j = 0; j < piecePositions[i].length; j++) {
+                ChessPiece chessPiece = piecePositions[i][j];
+                if (chessPiece.isNone()) {
+                    emptySquares++;
+                    if (j == piecePositions[i].length - 1) {
+                        sb.append(emptySquares);
+                        emptySquares = 0;
+                    }
+                } else {
+                    if (emptySquares > 0) {
+                        sb.append(emptySquares);
+                        emptySquares = 0;
+                    }
+                    sb.append(chessPiece.getFenCode());
+                }
+            }
+            if (i < piecePositions.length - 1) {
+                sb.append('/');
+            }
+        }
+        return sb.toString();
+    }
 }
