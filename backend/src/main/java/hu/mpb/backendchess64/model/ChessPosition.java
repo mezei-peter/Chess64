@@ -76,7 +76,13 @@ public class ChessPosition {
     }
 
     private static PieceColor convertToColor(String s) {
-        return null;
+        if (s.equals("w")) {
+            return PieceColor.WHITE;
+        }
+        if (s.equals("b")) {
+            return PieceColor.BLACK;
+        }
+        return PieceColor.NONE;
     }
 
     private static ChessPiece[][] convertToPiecePositions(String s) {
