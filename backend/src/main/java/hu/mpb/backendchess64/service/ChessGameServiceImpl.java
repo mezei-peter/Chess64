@@ -1,11 +1,14 @@
 package hu.mpb.backendchess64.service;
 
+import hu.mpb.backendchess64.exception.InvalidChessMoveException;
 import hu.mpb.backendchess64.model.ChessResult;
 import hu.mpb.backendchess64.model.PersistedChessGame;
 import hu.mpb.backendchess64.repository.ChessGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 
 public class ChessGameServiceImpl implements ChessGameService {
     private static final String initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -30,6 +33,17 @@ public class ChessGameServiceImpl implements ChessGameService {
                 .fenPositions(initialFen)
                 .build();
         return chessGameRepository.save(game);
+    }
+
+    @Override
+    public void makeMove(PersistedChessGame game, UUID playerId, String newMoveFen) throws InvalidChessMoveException {
+        //TODO
+    }
+
+    @Override
+    public List<String> listLegalMoveFens(String fen) {
+        //TODO
+        return null;
     }
 
 }

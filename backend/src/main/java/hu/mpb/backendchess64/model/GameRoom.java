@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -41,5 +42,13 @@ public class GameRoom {
 
     public String getLatestFen() {
         return game.getLatestFen();
+    }
+
+    public ChessResult getGameResult() {
+        return game.getResult();
+    }
+
+    public List<String> listFenPositions() {
+        return game.listFenPositions();
     }
 }

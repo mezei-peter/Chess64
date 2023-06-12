@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -46,6 +48,11 @@ public class PersistedChessGame {
     private String fenPositions;
 
     public String getLatestFen() {
-        return fenPositions.split(Character.toString(fenSplitter))[0];
+        String[] positions = fenPositions.split(Character.toString(fenSplitter));
+        return positions[positions.length - 1];
+    }
+
+    public List<String> listFenPositions() {
+        return Arrays.stream(fenPositions.split(Character.toString(fenSplitter))).toList();
     }
 }
