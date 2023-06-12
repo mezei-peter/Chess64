@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -48,7 +47,7 @@ public class GameRoom {
         return game.getResult();
     }
 
-    public List<String> listFenPositions() {
-        return game.listFenPositions();
+    public String[] splitFenPositions() {
+        return game.splitFenPositions();
     }
 }

@@ -115,8 +115,8 @@ public class GameRoomController {
             }
             chessGameService.makeMove(room.getGame(), playerUUID, moveFen);
             String latestFen = room.getLatestFen();
-            ChessGameDto chessGameUpdate = new ChessGameDto(room.getGameResult(), room.listFenPositions(),
-                    chessGameService.listLegalMoveFens(latestFen));
+            ChessGameDto chessGameUpdate = new ChessGameDto(room.getGameResult(), room.splitFenPositions(),
+                    chessGameService.calculateLegalMoveFens(latestFen));
             template.convertAndSend("/topic/chessGameUpdate/" + roomId, chessGameUpdate);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException | InvalidChessMoveException e) {

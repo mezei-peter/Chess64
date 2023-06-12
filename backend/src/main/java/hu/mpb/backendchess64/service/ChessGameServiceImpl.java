@@ -7,7 +7,6 @@ import hu.mpb.backendchess64.repository.ChessGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 public class ChessGameServiceImpl implements ChessGameService {
@@ -41,7 +40,7 @@ public class ChessGameServiceImpl implements ChessGameService {
     }
 
     @Override
-    public List<String> listLegalMoveFens(String fen) {
+    public String[] calculateLegalMoveFens(String fen) {
         //TODO
         return null;
     }
