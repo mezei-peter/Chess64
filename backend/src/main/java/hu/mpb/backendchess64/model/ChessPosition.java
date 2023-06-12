@@ -1,6 +1,14 @@
 package hu.mpb.backendchess64.model;
 
 public class ChessPosition {
+    private static final int piecePosIndex = 0;
+    private static final int colorIndex = 1;
+    private static final int castlingIndex = 2;
+    private static final int enPassantIndex = 3;
+    private static final int halfMoveIndex = 4;
+    private static final int fullMoveIndex = 5;
+
+
     private final ChessPiece[][] piecePositions;
     private final PieceColor activeColor;
     private final CastlingRights castlingRights;
@@ -16,6 +24,32 @@ public class ChessPosition {
         this.enPassantTarget = enPassantTarget;
         this.halfMoveClock = halfMoveClock;
         this.fullMoveClock = fullMoveClock;
+    }
+
+    public static ChessPosition fromFen(String fen) {
+        String[] splitFen = fen.split(" ");
+        ChessPiece[][] piecePositions = convertToPiecePositions(splitFen[piecePosIndex]);
+        PieceColor color = convertToColor(splitFen[colorIndex]);
+        CastlingRights castlingRights = convertToCastlingRights(splitFen[castlingIndex]);
+        ChessSquare enPassantSquare = convertToEnPassantSquare(splitFen[enPassantIndex]);
+        short halfMoves = Short.parseShort(splitFen[halfMoveIndex]);
+        short fullMoves = Short.parseShort(splitFen[fullMoveIndex]);
+        return new ChessPosition(piecePositions, color, castlingRights, enPassantSquare, halfMoves, fullMoves);
+    }
+
+    private static ChessSquare convertToEnPassantSquare(String s) {
+    }
+
+    private static CastlingRights convertToCastlingRights(String s) {
+        return null;
+    }
+
+    private static PieceColor convertToColor(String s) {
+        return null;
+    }
+
+    private static ChessPiece[][] convertToPiecePositions(String s) {
+        return null;
     }
 
     public String getFEN() {
