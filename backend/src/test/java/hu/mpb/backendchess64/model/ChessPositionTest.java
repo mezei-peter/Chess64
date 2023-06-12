@@ -2,7 +2,7 @@ package hu.mpb.backendchess64.model;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ChessPositionTest {
     private final ChessPiece whiteKing = new ChessPiece(PieceType.KING, PieceColor.WHITE);
@@ -91,6 +91,30 @@ class ChessPositionTest {
 
         String expected = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
         String result = chessPosition.getFEN();
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void testFromFen_1_e4() {
+        String fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+        ChessPosition expected = new ChessPosition(
+                new ChessPiece[][]{
+                        {blackRook, blackKnight, blackBishop, blackQueen, blackKing, blackBishop, blackKnight, blackRook},
+                        {blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn},
+                        {none, none, none, none, none, none, none, none},
+                        {none, none, none, none, none, none, none, none},
+                        {none, none, none, none, whitePawn, none, none, none},
+                        {none, none, none, none, none, none, none, none},
+                        {whitePawn, whitePawn, whitePawn, whitePawn, none, whitePawn, whitePawn, whitePawn},
+                        {whiteRook, whiteKnight, whiteBishop, whiteQueen, whiteKing, whiteBishop, whiteKnight, whiteRook},
+                },
+                PieceColor.BLACK,
+                new CastlingRights(true, true, true, true),
+                new ChessSquare((byte) 4, (byte) 5, ChessPiece.none()),
+                (short) 0,
+                (short) 1
+        );
+        ChessPosition result = ChessPosition.fromFen(fen);
         assertEquals(expected, result);
     }
 }

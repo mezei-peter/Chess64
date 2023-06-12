@@ -1,5 +1,7 @@
 package hu.mpb.backendchess64.model;
 
+import java.util.Arrays;
+
 public class ChessSquare {
     private final byte coordinates[] = new byte[2];
     private ChessPiece chessPiece;
@@ -26,5 +28,18 @@ public class ChessSquare {
 
     public byte getRankName() {
         return (byte) (coordinates[1] + 1);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        ChessSquare other = (ChessSquare) obj;
+        return Arrays.equals(this.coordinates, other.coordinates) &&
+               this.chessPiece.equals(other.chessPiece);
     }
 }

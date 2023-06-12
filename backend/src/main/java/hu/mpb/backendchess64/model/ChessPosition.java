@@ -1,5 +1,7 @@
 package hu.mpb.backendchess64.model;
 
+import java.util.Arrays;
+
 public class ChessPosition {
     private static final int piecePosIndex = 0;
     private static final int colorIndex = 1;
@@ -96,10 +98,10 @@ public class ChessPosition {
                 char c = rank.charAt(j);
                 if (Character.isDigit(c)) {
                     int digit = Character.getNumericValue(c);
-                    for (int x = 0; x < emptyOffset; x++) {
-                        pieces[i][j + emptyOffset + x] = ChessPiece.none();
+                    for (int x = 0; x < digit; x++) {
+                        pieces[i][j + x + emptyOffset] = ChessPiece.none();
                     }
-                    emptyOffset += digit;
+                    emptyOffset += digit - 1;
                 } else {
                     pieces[i][j + emptyOffset] = ChessPiece.fromChar(c);
                 }
@@ -195,5 +197,22 @@ public class ChessPosition {
                 sb.append('/');
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        ChessPosition other = (ChessPosition) obj;
+        return Arrays.deepEquals(this.piecePositions, other.piecePositions) &&
+               activeColor == other.activeColor &&
+               castlingRights.equals(other.castlingRights) &&
+               enPassantTarget.equals(other.enPassantTarget) &&
+               halfMoveClock == other.halfMoveClock &&
+               fullMoveClock == other.fullMoveClock;
     }
 }
