@@ -27,7 +27,7 @@ public class ChessSquare {
     }
 
     public byte getRankName() {
-        return (byte) (coordinates[1] + 1);
+        return (byte) (ChessGame.BOARD_SIZE - coordinates[1]);
     }
 
     @Override

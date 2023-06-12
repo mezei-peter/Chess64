@@ -84,7 +84,7 @@ class ChessPositionTest {
                 },
                 PieceColor.BLACK,
                 new CastlingRights(true, true, true, true),
-                new ChessSquare((byte) 4, (byte) 2, ChessPiece.none()),
+                new ChessSquare((byte) 4, (byte) 5, ChessPiece.none()),
                 (short) 0,
                 (short) 1
         );
