@@ -38,6 +38,32 @@ public class ChessPosition {
     }
 
     private static ChessSquare convertToEnPassantSquare(String s) {
+        assert s.length() == 2 : "en passant square notation is not 2 characters long";
+        char file = s.charAt(0);
+        char rank = s.charAt(1);
+        byte fileIdx = switch (file) {
+            case 'a' -> 0;
+            case 'b' -> 1;
+            case 'c' -> 2;
+            case 'd' -> 3;
+            case 'e' -> 4;
+            case 'f' -> 5;
+            case 'g' -> 6;
+            case 'h' -> 7;
+            default -> throw new IllegalStateException("Unexpected value: " + file);
+        };
+        byte rankIdx = switch (rank) {
+            case '8' -> 0;
+            case '7' -> 1;
+            case '6' -> 2;
+            case '5' -> 3;
+            case '4' -> 4;
+            case '3' -> 5;
+            case '2' -> 6;
+            case '1' -> 7;
+            default -> throw new IllegalStateException("Unexpected value: " + file);
+        };
+        return new ChessSquare(fileIdx, rankIdx, ChessPiece.none());
     }
 
     private static CastlingRights convertToCastlingRights(String s) {
