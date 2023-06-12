@@ -1,7 +1,10 @@
 package hu.mpb.backendchess64.model;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+@Getter
 public class ChessPosition {
     private static final int piecePosIndex = 0;
     private static final int colorIndex = 1;
@@ -214,5 +217,9 @@ public class ChessPosition {
                enPassantTarget.equals(other.enPassantTarget) &&
                halfMoveClock == other.halfMoveClock &&
                fullMoveClock == other.fullMoveClock;
+    }
+
+    public boolean sameActiveColor(PieceColor color) {
+        return activeColor.equals(color);
     }
 }
