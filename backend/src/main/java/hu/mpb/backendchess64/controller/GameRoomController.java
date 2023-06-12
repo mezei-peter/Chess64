@@ -113,7 +113,10 @@ public class GameRoomController {
             if (room == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            chessGameService.makeMove(room.getGame(), playerUUID, moveFen);
+            if (!room.canPlayerMove(playerUUID)) {
+                throw new IllegalArgumentException("Player with UUID '" + playerId + "' is not in turn to move.");
+            }
+            chessGameService.makeMove(room.getGame(), moveFen);
             String latestFen = room.getLatestFen();
             ChessGameDto chessGameUpdate = new ChessGameDto(room.getGameResult(), room.splitFenPositions(),
                     chessGameService.calculateLegalMoveFens(latestFen));

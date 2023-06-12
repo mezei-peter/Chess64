@@ -15,7 +15,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class PersistedChessGame {
-    private static final char fenSplitter = ';';
+    private static final int fenColorFieldIndex = 1;
+    public static final char fenSplitter = ';';
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -52,5 +53,16 @@ public class PersistedChessGame {
 
     public String[] splitFenPositions() {
         return fenPositions.split(Character.toString(fenSplitter));
+    }
+
+    public PieceColor getColorToMove() {
+        char colorField = getLatestFen().split(" ")[fenColorFieldIndex].toCharArray()[0];
+        if (colorField == 'w') {
+            return PieceColor.WHITE;
+        }
+        if (colorField == 'b') {
+            return PieceColor.BLACK;
+        }
+        return PieceColor.NONE;
     }
 }

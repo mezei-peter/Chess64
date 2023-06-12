@@ -35,7 +35,7 @@ public class ChessGameServiceImpl implements ChessGameService {
     }
 
     @Override
-    public void makeMove(PersistedChessGame game, UUID playerId, String newMoveFen) throws InvalidChessMoveException {
+    public void makeMove(PersistedChessGame game, String newMoveFen) throws InvalidChessMoveException {
         //TODO
     }
 

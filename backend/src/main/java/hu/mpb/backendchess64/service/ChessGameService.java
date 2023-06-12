@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface ChessGameService {
     PersistedChessGame createPersistedChessGame(String white, String black);
 
-    void makeMove(PersistedChessGame game, UUID playerId, String newMoveFen) throws InvalidChessMoveException;
+    void makeMove(PersistedChessGame game, String newMoveFen) throws InvalidChessMoveException;
 
     String[] calculateLegalMoveFens(String latestFen);
 }

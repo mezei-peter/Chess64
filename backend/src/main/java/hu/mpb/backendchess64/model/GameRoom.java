@@ -50,4 +50,12 @@ public class GameRoom {
     public String[] splitFenPositions() {
         return game.splitFenPositions();
     }
+
+    public boolean canPlayerMove(UUID playerUUID) {
+        PieceColor colorToMove = game.getColorToMove();
+        if (colorToMove == PieceColor.WHITE && playerUUID.equals(whitePlayer.getPlayerId())) {
+            return true;
+        }
+        return colorToMove == PieceColor.BLACK && playerUUID.equals(blackPlayer.getPlayerId());
+    }
 }
