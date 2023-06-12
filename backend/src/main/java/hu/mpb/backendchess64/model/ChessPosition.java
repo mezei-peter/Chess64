@@ -67,7 +67,12 @@ public class ChessPosition {
     }
 
     private static CastlingRights convertToCastlingRights(String s) {
-        return null;
+        return new CastlingRights(
+                s.contains("K"),
+                s.contains("Q"),
+                s.contains("k"),
+                s.contains("q")
+        );
     }
 
     private static PieceColor convertToColor(String s) {
