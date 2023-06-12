@@ -86,7 +86,26 @@ public class ChessPosition {
     }
 
     private static ChessPiece[][] convertToPiecePositions(String s) {
-        return null;
+        String[] ranks = s.split("/");
+        assert ranks.length == 8 : "Invalid number of ranks in FEN: should be 8.";
+        ChessPiece[][] pieces = new ChessPiece[ChessGame.BOARD_SIZE][ChessGame.BOARD_SIZE];
+        for (int i = 0; i < ranks.length; i++) {
+            String rank = ranks[i];
+            int emptyOffset = 0;
+            for (int j = 0; j < rank.length(); j++) {
+                char c = rank.charAt(j);
+                if (Character.isDigit(c)) {
+                    int digit = Character.getNumericValue(c);
+                    for (int x = 0; x < emptyOffset; x++) {
+                        pieces[i][j + emptyOffset + x] = ChessPiece.none();
+                    }
+                    emptyOffset += digit;
+                } else {
+                    pieces[i][j + emptyOffset] = ChessPiece.fromChar(c);
+                }
+            }
+        }
+        return pieces;
     }
 
     public String getFEN() {
