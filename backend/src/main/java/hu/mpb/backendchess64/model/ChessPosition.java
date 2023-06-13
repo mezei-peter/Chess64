@@ -222,4 +222,14 @@ public class ChessPosition {
     public boolean sameActiveColor(PieceColor color) {
         return activeColor.equals(color);
     }
+
+    public PieceType getPieceTypeAt(int x, int y) {
+        if (x >= piecePositions.length || x < 0) {
+            return PieceType.NONE;
+        }
+        if (y >= piecePositions[x].length || y < 0) {
+            return PieceType.NONE;
+        }
+        return piecePositions[x][y].type();
+    }
 }

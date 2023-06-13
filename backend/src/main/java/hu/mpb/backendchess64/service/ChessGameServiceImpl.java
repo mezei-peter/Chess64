@@ -113,8 +113,17 @@ public class ChessGameServiceImpl implements ChessGameService {
     }
 
     private boolean findPawnChecks(ChessPosition position, int kingX, int kingY) {
-        // TODO
-        return false;
+        PieceColor color = position.getActiveColor();
+        if (color == PieceColor.NONE || color == null) {
+            return false;
+        }
+        if (color == PieceColor.WHITE) {
+            return position.getPieceTypeAt(kingX - 1, kingY - 1) == PieceType.PAWN
+                   || position.getPieceTypeAt(kingX + 1, kingY - 1) == PieceType.PAWN;
+        } else {
+            return position.getPieceTypeAt(kingX - 1, kingY + 1) == PieceType.PAWN
+                   || position.getPieceTypeAt(kingX + 1, kingY + 1) == PieceType.PAWN;
+        }
     }
 
     private Collection<String> calcPawnMoveFens(ChessPiece piece, ChessPosition position, int file, int rank,
