@@ -224,12 +224,16 @@ public class ChessPosition {
     }
 
     public PieceType getPieceTypeAt(int x, int y) {
+        return getPieceAt(x, y).type();
+    }
+
+    public ChessPiece getPieceAt(int x, int y) {
         if (x >= piecePositions.length || x < 0) {
-            return PieceType.NONE;
+            return ChessPiece.none();
         }
         if (y >= piecePositions[x].length || y < 0) {
-            return PieceType.NONE;
+            return ChessPiece.none();
         }
-        return piecePositions[x][y].type();
+        return piecePositions[x][y];
     }
 }

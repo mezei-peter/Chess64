@@ -108,21 +108,38 @@ public class ChessGameServiceImpl implements ChessGameService {
     }
 
     private boolean findKnightChecks(ChessPosition position, int kingX, int kingY) {
-        // TODO
-        return false;
-    }
-
-    private boolean findPawnChecks(ChessPosition position, int kingX, int kingY) {
         PieceColor color = position.getActiveColor();
         if (color == PieceColor.NONE || color == null) {
             return false;
         }
+        ChessPiece enemyKnight;
+        if (color == PieceColor.WHITE) {
+            enemyKnight = new ChessPiece(PieceType.KNIGHT, PieceColor.BLACK);
+        } else if (color == PieceColor.BLACK) {
+            enemyKnight = new ChessPiece(PieceType.KNIGHT, PieceColor.WHITE);
+        } else {
+            enemyKnight = new ChessPiece(PieceType.NONE, PieceColor.NONE);
+        }
+        return enemyKnight.equals(position.getPieceAt(kingX - 2, kingY - 1))
+               || enemyKnight.equals(position.getPieceAt(kingX - 2, kingY + 1))
+               || enemyKnight.equals(position.getPieceAt(kingX + 2, kingY - 1))
+               || enemyKnight.equals(position.getPieceAt(kingX + 2, kingY + 1))
+               || enemyKnight.equals(position.getPieceAt(kingX - 1, kingY - 1))
+               || enemyKnight.equals(position.getPieceAt(kingX - 1, kingY + 1))
+               || enemyKnight.equals(position.getPieceAt(kingX + 1, kingY - 1))
+               || enemyKnight.equals(position.getPieceAt(kingX + 1, kingY + 1));
+    }
+
+    private boolean findPawnChecks(ChessPosition position, int kingX, int kingY) {
+        PieceColor color = position.getActiveColor();
         if (color == PieceColor.WHITE) {
             return position.getPieceTypeAt(kingX - 1, kingY - 1) == PieceType.PAWN
                    || position.getPieceTypeAt(kingX + 1, kingY - 1) == PieceType.PAWN;
-        } else {
+        } else if (color == PieceColor.BLACK) {
             return position.getPieceTypeAt(kingX - 1, kingY + 1) == PieceType.PAWN
                    || position.getPieceTypeAt(kingX + 1, kingY + 1) == PieceType.PAWN;
+        } else {
+            return false;
         }
     }
 
