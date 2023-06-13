@@ -6,7 +6,10 @@ import hu.mpb.backendchess64.repository.ChessGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 public class ChessGameServiceImpl implements ChessGameService {
     private static final String initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -50,7 +53,7 @@ public class ChessGameServiceImpl implements ChessGameService {
                 ChessPiece piece = pieceMatrix[i][j];
                 if (position.sameActiveColor(piece.color())) {
                     switch (piece.type()) {
-                        case KING -> legalList.addAll(calcKingMoveFens(piece, position, i ,j, isInCheck));
+                        case KING -> legalList.addAll(calcKingMoveFens(piece, position, i, j, isInCheck));
                         case QUEEN -> legalList.addAll(calcQueenMoveFens(piece, position, i, j, isInCheck));
                         case ROOK -> legalList.addAll(calcRookMoveFens(piece, position, i, j, isInCheck));
                         case BISHOP -> legalList.addAll(calcBishopMoveFens(piece, position, i, j, isInCheck));
@@ -68,7 +71,49 @@ public class ChessGameServiceImpl implements ChessGameService {
     }
 
     private boolean determineCheck(ChessPosition position) {
-        //TODO
+        PieceColor color = position.getActiveColor();
+        ChessPiece[][] matrix = position.getPiecePositions();
+        int kingX = -1, kingY = -1;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                ChessPiece piece = matrix[i][j];
+                if (PieceType.KING.equals(piece.type()) && color.equals(piece.color())) {
+                    kingX = i;
+                    kingY = j;
+                    break;
+                }
+            }
+            if (i == matrix.length - 1) {
+                return false;
+            }
+        }
+        return findPawnChecks(position, kingX, kingY) || findKnightChecks(position, kingX, kingY)
+               || findBishopChecks(position, kingX, kingY) || findRookChecks(position, kingX, kingY)
+               || findQueenChecks(position, kingX, kingY);
+    }
+
+    private boolean findQueenChecks(ChessPosition position, int kingX, int kingY) {
+        // TODO
+        return false;
+    }
+
+    private boolean findRookChecks(ChessPosition position, int kingX, int kingY) {
+        // TODO
+        return false;
+    }
+
+    private boolean findBishopChecks(ChessPosition position, int kingX, int kingY) {
+        // TODO
+        return false;
+    }
+
+    private boolean findKnightChecks(ChessPosition position, int kingX, int kingY) {
+        // TODO
+        return false;
+    }
+
+    private boolean findPawnChecks(ChessPosition position, int kingX, int kingY) {
+        // TODO
         return false;
     }
 
