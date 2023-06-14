@@ -87,12 +87,12 @@ public class ChessGameServiceImpl implements ChessGameService {
                 return false;
             }
         }
-        return findPawnChecks(position, kingX, kingY) || findKnightChecks(position, kingX, kingY)
-               || findBishopChecks(position, kingX, kingY) || findRookChecks(position, kingX, kingY)
-               || findQueenChecks(position, kingX, kingY);
+        return isAttackedByPawn(position, kingX, kingY) || isAttackedByKnight(position, kingX, kingY)
+               || isAttackedByBishop(position, kingX, kingY) || isAttackedByRook(position, kingX, kingY)
+               || isAttackedByQueen(position, kingX, kingY);
     }
 
-    private boolean findQueenChecks(ChessPosition position, int kingX, int kingY) {
+    private boolean isAttackedByQueen(ChessPosition position, int targetX, int targetY) {
         PieceColor color = position.getActiveColor();
         if (color == PieceColor.NONE || color == null) {
             return false;
@@ -105,17 +105,17 @@ public class ChessGameServiceImpl implements ChessGameService {
         } else {
             enemyQueen = new ChessPiece(PieceType.NONE, PieceColor.NONE);
         }
-        return findCheckOnLine(position, kingX, kingY, +1, 0, enemyQueen)
-               || findCheckOnLine(position, kingX, kingY, -1, 0, enemyQueen)
-               || findCheckOnLine(position, kingX, kingY, 0, +1, enemyQueen)
-               || findCheckOnLine(position, kingX, kingY, 0, -1, enemyQueen)
-               || findCheckOnLine(position, kingX, kingY, +1, +1, enemyQueen)
-               || findCheckOnLine(position, kingX, kingY, -1, +1, enemyQueen)
-               || findCheckOnLine(position, kingX, kingY, +1, -1, enemyQueen)
-               || findCheckOnLine(position, kingX, kingY, -1, -1, enemyQueen);
+        return isAttackedOnLine(position, targetX, targetY, +1, 0, enemyQueen)
+               || isAttackedOnLine(position, targetX, targetY, -1, 0, enemyQueen)
+               || isAttackedOnLine(position, targetX, targetY, 0, +1, enemyQueen)
+               || isAttackedOnLine(position, targetX, targetY, 0, -1, enemyQueen)
+               || isAttackedOnLine(position, targetX, targetY, +1, +1, enemyQueen)
+               || isAttackedOnLine(position, targetX, targetY, -1, +1, enemyQueen)
+               || isAttackedOnLine(position, targetX, targetY, +1, -1, enemyQueen)
+               || isAttackedOnLine(position, targetX, targetY, -1, -1, enemyQueen);
     }
 
-    private boolean findRookChecks(ChessPosition position, int kingX, int kingY) {
+    private boolean isAttackedByRook(ChessPosition position, int targetX, int targetY) {
         PieceColor color = position.getActiveColor();
         if (color == PieceColor.NONE || color == null) {
             return false;
@@ -128,13 +128,13 @@ public class ChessGameServiceImpl implements ChessGameService {
         } else {
             enemyRook = new ChessPiece(PieceType.NONE, PieceColor.NONE);
         }
-        return findCheckOnLine(position, kingX, kingY, +1, 0, enemyRook)
-               || findCheckOnLine(position, kingX, kingY, -1, 0, enemyRook)
-               || findCheckOnLine(position, kingX, kingY, 0, +1, enemyRook)
-               || findCheckOnLine(position, kingX, kingY, 0, -1, enemyRook);
+        return isAttackedOnLine(position, targetX, targetY, +1, 0, enemyRook)
+               || isAttackedOnLine(position, targetX, targetY, -1, 0, enemyRook)
+               || isAttackedOnLine(position, targetX, targetY, 0, +1, enemyRook)
+               || isAttackedOnLine(position, targetX, targetY, 0, -1, enemyRook);
     }
 
-    private boolean findBishopChecks(ChessPosition position, int kingX, int kingY) {
+    private boolean isAttackedByBishop(ChessPosition position, int targetX, int targetY) {
         PieceColor color = position.getActiveColor();
         if (color == PieceColor.NONE || color == null) {
             return false;
@@ -147,20 +147,20 @@ public class ChessGameServiceImpl implements ChessGameService {
         } else {
             enemyBishop = new ChessPiece(PieceType.NONE, PieceColor.NONE);
         }
-        return findCheckOnLine(position, kingX, kingY, +1, +1, enemyBishop)
-               || findCheckOnLine(position, kingX, kingY, -1, +1, enemyBishop)
-               || findCheckOnLine(position, kingX, kingY, +1, -1, enemyBishop)
-               || findCheckOnLine(position, kingX, kingY, -1, -1, enemyBishop);
+        return isAttackedOnLine(position, targetX, targetY, +1, +1, enemyBishop)
+               || isAttackedOnLine(position, targetX, targetY, -1, +1, enemyBishop)
+               || isAttackedOnLine(position, targetX, targetY, +1, -1, enemyBishop)
+               || isAttackedOnLine(position, targetX, targetY, -1, -1, enemyBishop);
     }
 
-    private boolean findCheckOnLine(ChessPosition position, int kingX, int kingY, int offsetX, int offsetY,
-                                    ChessPiece enemyPiece) {
+    private boolean isAttackedOnLine(ChessPosition position, int targetX, int targetY, int offsetX, int offsetY,
+                                     ChessPiece enemyPiece) {
         if (offsetX == 0 && offsetY == 0) {
             return false;
         }
         int len = position.getPiecePositionsLength();
         boolean isPresentBlockingPiece = false;
-        for (int i = kingX + offsetX, j = kingY + offsetY;
+        for (int i = targetX + offsetX, j = targetY + offsetY;
              (offsetX > 0 ? i < len : i >= 0) || (offsetY > 0 ? j < len : j >= 0);
              i += offsetX, j += offsetY) {
             ChessPiece piece = position.getPieceAt(i, j);
@@ -174,7 +174,7 @@ public class ChessGameServiceImpl implements ChessGameService {
         return false;
     }
 
-    private boolean findKnightChecks(ChessPosition position, int kingX, int kingY) {
+    private boolean isAttackedByKnight(ChessPosition position, int targetX, int targetY) {
         PieceColor color = position.getActiveColor();
         if (color == PieceColor.NONE || color == null) {
             return false;
@@ -187,24 +187,24 @@ public class ChessGameServiceImpl implements ChessGameService {
         } else {
             enemyKnight = new ChessPiece(PieceType.NONE, PieceColor.NONE);
         }
-        return enemyKnight.equals(position.getPieceAt(kingX - 2, kingY - 1))
-               || enemyKnight.equals(position.getPieceAt(kingX - 2, kingY + 1))
-               || enemyKnight.equals(position.getPieceAt(kingX + 2, kingY - 1))
-               || enemyKnight.equals(position.getPieceAt(kingX + 2, kingY + 1))
-               || enemyKnight.equals(position.getPieceAt(kingX - 1, kingY - 1))
-               || enemyKnight.equals(position.getPieceAt(kingX - 1, kingY + 1))
-               || enemyKnight.equals(position.getPieceAt(kingX + 1, kingY - 1))
-               || enemyKnight.equals(position.getPieceAt(kingX + 1, kingY + 1));
+        return enemyKnight.equals(position.getPieceAt(targetX - 2, targetY - 1))
+               || enemyKnight.equals(position.getPieceAt(targetX - 2, targetY + 1))
+               || enemyKnight.equals(position.getPieceAt(targetX + 2, targetY - 1))
+               || enemyKnight.equals(position.getPieceAt(targetX + 2, targetY + 1))
+               || enemyKnight.equals(position.getPieceAt(targetX - 1, targetY - 1))
+               || enemyKnight.equals(position.getPieceAt(targetX - 1, targetY + 1))
+               || enemyKnight.equals(position.getPieceAt(targetX + 1, targetY - 1))
+               || enemyKnight.equals(position.getPieceAt(targetX + 1, targetY + 1));
     }
 
-    private boolean findPawnChecks(ChessPosition position, int kingX, int kingY) {
+    private boolean isAttackedByPawn(ChessPosition position, int targetX, int targetY) {
         PieceColor color = position.getActiveColor();
         if (color == PieceColor.WHITE) {
-            return position.getPieceTypeAt(kingX - 1, kingY - 1) == PieceType.PAWN
-                   || position.getPieceTypeAt(kingX + 1, kingY - 1) == PieceType.PAWN;
+            return position.getPieceTypeAt(targetX - 1, targetY - 1) == PieceType.PAWN
+                   || position.getPieceTypeAt(targetX + 1, targetY - 1) == PieceType.PAWN;
         } else if (color == PieceColor.BLACK) {
-            return position.getPieceTypeAt(kingX - 1, kingY + 1) == PieceType.PAWN
-                   || position.getPieceTypeAt(kingX + 1, kingY + 1) == PieceType.PAWN;
+            return position.getPieceTypeAt(targetX - 1, targetY + 1) == PieceType.PAWN
+                   || position.getPieceTypeAt(targetX + 1, targetY + 1) == PieceType.PAWN;
         } else {
             return false;
         }
