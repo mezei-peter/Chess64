@@ -200,14 +200,15 @@ public class ChessGameServiceImpl implements ChessGameService {
     private boolean isAttackedByPawn(ChessPosition position, int targetX, int targetY) {
         PieceColor color = position.getActiveColor();
         if (color == PieceColor.WHITE) {
-            return position.getPieceTypeAt(targetX - 1, targetY - 1) == PieceType.PAWN
-                   || position.getPieceTypeAt(targetX + 1, targetY - 1) == PieceType.PAWN;
+            ChessPiece enemyPawn = new ChessPiece(PieceType.PAWN, PieceColor.BLACK);
+            return enemyPawn.equals(position.getPieceAt(targetX - 1, targetY - 1))
+                   || enemyPawn.equals(position.getPieceAt(targetX + 1, targetY - 1));
         } else if (color == PieceColor.BLACK) {
-            return position.getPieceTypeAt(targetX - 1, targetY + 1) == PieceType.PAWN
-                   || position.getPieceTypeAt(targetX + 1, targetY + 1) == PieceType.PAWN;
-        } else {
-            return false;
+            ChessPiece enemyPawn = new ChessPiece(PieceType.PAWN, PieceColor.WHITE);
+            return enemyPawn.equals(position.getPieceAt(targetX - 1, targetY + 1))
+                   || enemyPawn.equals(position.getPieceAt(targetX + 1, targetY + 1));
         }
+        return false;
     }
 
     private boolean isAttackedByKing(ChessPosition position, int targetX, int targetY) {
