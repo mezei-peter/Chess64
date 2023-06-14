@@ -98,8 +98,22 @@ public class ChessGameServiceImpl implements ChessGameService {
     }
 
     private boolean findRookChecks(ChessPosition position, int kingX, int kingY) {
-        // TODO
-        return false;
+        PieceColor color = position.getActiveColor();
+        if (color == PieceColor.NONE || color == null) {
+            return false;
+        }
+        ChessPiece enemyRook;
+        if (color == PieceColor.WHITE) {
+            enemyRook = new ChessPiece(PieceType.ROOK, PieceColor.BLACK);
+        } else if (color == PieceColor.BLACK) {
+            enemyRook = new ChessPiece(PieceType.ROOK, PieceColor.WHITE);
+        } else {
+            enemyRook = new ChessPiece(PieceType.NONE, PieceColor.NONE);
+        }
+        return findCheckOnLine(position, kingX, kingY, +1, 0, enemyRook)
+               || findCheckOnLine(position, kingX, kingY, -1, 0, enemyRook)
+               || findCheckOnLine(position, kingX, kingY, 0, +1, enemyRook)
+               || findCheckOnLine(position, kingX, kingY, 0, -1, enemyRook);
     }
 
     private boolean findBishopChecks(ChessPosition position, int kingX, int kingY) {
@@ -109,9 +123,9 @@ public class ChessGameServiceImpl implements ChessGameService {
         }
         ChessPiece enemyBishop;
         if (color == PieceColor.WHITE) {
-            enemyBishop = new ChessPiece(PieceType.KNIGHT, PieceColor.BLACK);
+            enemyBishop = new ChessPiece(PieceType.BISHOP, PieceColor.BLACK);
         } else if (color == PieceColor.BLACK) {
-            enemyBishop = new ChessPiece(PieceType.KNIGHT, PieceColor.WHITE);
+            enemyBishop = new ChessPiece(PieceType.BISHOP, PieceColor.WHITE);
         } else {
             enemyBishop = new ChessPiece(PieceType.NONE, PieceColor.NONE);
         }
