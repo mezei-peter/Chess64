@@ -210,6 +210,29 @@ public class ChessGameServiceImpl implements ChessGameService {
         }
     }
 
+    private boolean isAttackedByKing(ChessPosition position, int targetX, int targetY) {
+        PieceColor color = position.getActiveColor();
+        if (color == PieceColor.NONE || color == null) {
+            return false;
+        }
+        ChessPiece enemyKing;
+        if (color == PieceColor.WHITE) {
+            enemyKing = new ChessPiece(PieceType.KING, PieceColor.BLACK);
+        } else if (color == PieceColor.BLACK) {
+            enemyKing = new ChessPiece(PieceType.KING, PieceColor.WHITE);
+        } else {
+            enemyKing = new ChessPiece(PieceType.NONE, PieceColor.NONE);
+        }
+        return enemyKing.equals(position.getPieceAt(targetX, targetY + 1))
+               || enemyKing.equals(position.getPieceAt(targetX, targetY - 1))
+               || enemyKing.equals(position.getPieceAt(targetX + 1, targetY))
+               || enemyKing.equals(position.getPieceAt(targetX - 1, targetY))
+               || enemyKing.equals(position.getPieceAt(targetX + 1, targetY + 1))
+               || enemyKing.equals(position.getPieceAt(targetX + 1, targetY - 1))
+               || enemyKing.equals(position.getPieceAt(targetX - 1, targetY + 1))
+               || enemyKing.equals(position.getPieceAt(targetX - 1, targetY - 1));
+    }
+
     private Collection<String> calcPawnMoveFens(ChessPiece piece, ChessPosition position, int file, int rank,
                                                 boolean inCheck) {
         //TODO
