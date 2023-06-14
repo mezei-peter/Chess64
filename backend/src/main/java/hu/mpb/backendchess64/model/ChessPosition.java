@@ -236,4 +236,8 @@ public class ChessPosition {
         }
         return piecePositions[x][y];
     }
+
+    public int getPiecePositionsLength() {
+        return this.piecePositions.length;
+    }
 }

@@ -103,7 +103,42 @@ public class ChessGameServiceImpl implements ChessGameService {
     }
 
     private boolean findBishopChecks(ChessPosition position, int kingX, int kingY) {
-        // TODO
+        PieceColor color = position.getActiveColor();
+        if (color == PieceColor.NONE || color == null) {
+            return false;
+        }
+        ChessPiece enemyBishop;
+        if (color == PieceColor.WHITE) {
+            enemyBishop = new ChessPiece(PieceType.KNIGHT, PieceColor.BLACK);
+        } else if (color == PieceColor.BLACK) {
+            enemyBishop = new ChessPiece(PieceType.KNIGHT, PieceColor.WHITE);
+        } else {
+            enemyBishop = new ChessPiece(PieceType.NONE, PieceColor.NONE);
+        }
+        return findCheckOnLine(position, kingX, kingY, +1, +1, enemyBishop)
+               || findCheckOnLine(position, kingX, kingY, -1, +1, enemyBishop)
+               || findCheckOnLine(position, kingX, kingY, +1, -1, enemyBishop)
+               || findCheckOnLine(position, kingX, kingY, -1, -1, enemyBishop);
+    }
+
+    private boolean findCheckOnLine(ChessPosition position, int kingX, int kingY, int offsetX, int offsetY,
+                                    ChessPiece enemyPiece) {
+        if (offsetX == 0 && offsetY == 0) {
+            return false;
+        }
+        int len = position.getPiecePositionsLength();
+        boolean isPresentBlockingPiece = false;
+        for (int i = kingX + offsetX, j = kingY + offsetY;
+             (offsetX > 0 ? i < len : i >= 0) || (offsetY > 0 ? j < len : j >= 0);
+             i += offsetX, j += offsetY) {
+            ChessPiece piece = position.getPieceAt(i, j);
+            if (piece.equals(enemyPiece) && !isPresentBlockingPiece) {
+                return true;
+            }
+            if (!piece.equals(ChessPiece.none())) {
+                isPresentBlockingPiece = true;
+            }
+        }
         return false;
     }
 
