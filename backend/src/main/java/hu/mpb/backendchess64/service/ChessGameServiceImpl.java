@@ -93,8 +93,26 @@ public class ChessGameServiceImpl implements ChessGameService {
     }
 
     private boolean findQueenChecks(ChessPosition position, int kingX, int kingY) {
-        // TODO
-        return false;
+        PieceColor color = position.getActiveColor();
+        if (color == PieceColor.NONE || color == null) {
+            return false;
+        }
+        ChessPiece enemyQueen;
+        if (color == PieceColor.WHITE) {
+            enemyQueen = new ChessPiece(PieceType.QUEEN, PieceColor.BLACK);
+        } else if (color == PieceColor.BLACK) {
+            enemyQueen = new ChessPiece(PieceType.QUEEN, PieceColor.WHITE);
+        } else {
+            enemyQueen = new ChessPiece(PieceType.NONE, PieceColor.NONE);
+        }
+        return findCheckOnLine(position, kingX, kingY, +1, 0, enemyQueen)
+               || findCheckOnLine(position, kingX, kingY, -1, 0, enemyQueen)
+               || findCheckOnLine(position, kingX, kingY, 0, +1, enemyQueen)
+               || findCheckOnLine(position, kingX, kingY, 0, -1, enemyQueen)
+               || findCheckOnLine(position, kingX, kingY, +1, +1, enemyQueen)
+               || findCheckOnLine(position, kingX, kingY, -1, +1, enemyQueen)
+               || findCheckOnLine(position, kingX, kingY, +1, -1, enemyQueen)
+               || findCheckOnLine(position, kingX, kingY, -1, -1, enemyQueen);
     }
 
     private boolean findRookChecks(ChessPosition position, int kingX, int kingY) {
